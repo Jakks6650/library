@@ -1,63 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Professional Library System</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Library System</h1>
-    <nav>
-      <button onclick="showTab('home')">Home</button>
-      <button onclick="showTab('library')">Library</button>
-      <button onclick="showTab('add-book')">Add Book</button>
-      <button onclick="showTab('return-book')">Return Book</button>
-    </nav>
-  </header>
 
-  <!-- Home Tab -->
-  <section id="home" class="tab-content">
-    <h2>Library Overview</h2>
-    <p>Total Books: <span id="total-books">0</span></p>
-    <p>Checked Out: <span id="checked-out-count">0</span></p>
-    <p>On Hold: <span id="hold-count">0</span></p>
-    <p>Lost: <span id="lost-count">0</span></p>
-  </section>
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button onclick="showTab('home')">Home</button>
+        <button onclick="showTab('library')">Library</button>
+        <button onclick="showTab('add-book')">Add Book</button>
+        <button onclick="showTab('return-book')">Return Book</button>
+    </div>
 
-  <!-- Library Tab -->
-  <section id="library" class="tab-content" style="display: none;">
-    <h2>Library Books</h2>
-    <input type="text" id="search" placeholder="Search books" oninput="searchBooks()">
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="book-table"></tbody>
-    </table>
-  </section>
+    <!-- Home Page -->
+    <div id="home" class="tab-content">
+        <h1>Library System</h1>
+        <p>Total Books: <span id="total-books">0</span></p>
+        <p>Checked Out: <span id="checked-out-count">0</span></p>
+        <p>On Hold: <span id="hold-count">0</span></p>
+        <p>Lost: <span id="lost-count">0</span></p>
+    </div>
 
-  <!-- Add Book Tab -->
-  <section id="add-book" class="tab-content" style="display: none;">
-    <h2>Register New Book</h2>
-    <input type="text" id="barcode" placeholder="Barcode">
-    <input type="text" id="title" placeholder="Title">
-    <input type="text" id="author" placeholder="Author">
-    <button onclick="registerBook()">Add Book</button>
-  </section>
+    <!-- Library Page -->
+    <div id="library" class="tab-content">
+        <h2>Library Books</h2>
+        <input type="text" id="search" placeholder="Search books" oninput="searchBooks()">
+        <table id="book-table">
+            <!-- Books will be listed here -->
+        </table>
+    </div>
 
-  <!-- Return Book Tab -->
-  <section id="return-book" class="tab-content" style="display: none;">
-    <h2>Return Book</h2>
-    <input type="text" id="return-barcode" placeholder="Scan or Enter Barcode">
-    <button onclick="returnBook()">Return Book</button>
-  </section>
+    <!-- Add Book Page -->
+    <div id="add-book" class="tab-content">
+        <h2>Add New Book</h2>
+        <label for="barcode">Barcode:</label>
+        <input type="text" id="barcode" placeholder="Enter barcode">
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter title">
+        <label for="author">Author:</label>
+        <input type="text" id="author" placeholder="Enter author">
+        <button onclick="registerBook()">Add Book</button>
+    </div>
 
-  <script src="scripts.js"></script>
+    <!-- Return Book Page -->
+    <div id="return-book" class="tab-content">
+        <h2>Return Book</h2>
+        <label for="return-barcode">Enter Barcode:</label>
+        <input type="text" id="return-barcode" placeholder="Scan or enter barcode">
+        <button onclick="returnBook()">Return Book</button>
+    </div>
+
+    <script src="scripts.js"></script>
 </body>
 </html>
