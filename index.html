@@ -3,47 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Library System</title>
+  <title>Professional Library System</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
+  <header>
     <h1>Library System</h1>
-    
-    <!-- Add Book Section -->
-    <section id="add-book">
-      <h2>Register New Book</h2>
-      <input type="text" id="barcode" placeholder="Barcode">
-      <input type="text" id="title" placeholder="Title">
-      <input type="text" id="author" placeholder="Author">
-      <button onclick="registerBook()">Add Book</button>
-    </section>
+    <nav>
+      <button onclick="showTab('home')">Home</button>
+      <button onclick="showTab('library')">Library</button>
+      <button onclick="showTab('add-book')">Add Book</button>
+      <button onclick="showTab('return-book')">Return Book</button>
+    </nav>
+  </header>
 
-    <!-- Book List Display -->
-    <section id="book-list">
-      <h2>Library Books</h2>
-      <input type="text" id="search" placeholder="Search books" oninput="searchBooks()">
-      <table>
-        <thead>
-          <tr>
-            <th>Barcode</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="book-table"></tbody>
-      </table>
-    </section>
+  <!-- Home Tab -->
+  <section id="home" class="tab-content">
+    <h2>Library Overview</h2>
+    <p>Total Books: <span id="total-books">0</span></p>
+    <p>Checked Out: <span id="checked-out-count">0</span></p>
+    <p>On Hold: <span id="hold-count">0</span></p>
+    <p>Lost: <span id="lost-count">0</span></p>
+  </section>
 
-    <!-- Return Book Section -->
-    <section id="return-book">
-      <h2>Return Book</h2>
-      <input type="text" id="return-barcode" placeholder="Scan or Enter Barcode">
-      <button onclick="returnBook()">Return Book</button>
-    </section>
-  </div>
+  <!-- Library Tab -->
+  <section id="library" class="tab-content" style="display: none;">
+    <h2>Library Books</h2>
+    <input type="text" id="search" placeholder="Search books" oninput="searchBooks()">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="book-table"></tbody>
+    </table>
+  </section>
+
+  <!-- Add Book Tab -->
+  <section id="add-book" class="tab-content" style="display: none;">
+    <h2>Register New Book</h2>
+    <input type="text" id="barcode" placeholder="Barcode">
+    <input type="text" id="title" placeholder="Title">
+    <input type="text" id="author" placeholder="Author">
+    <button onclick="registerBook()">Add Book</button>
+  </section>
+
+  <!-- Return Book Tab -->
+  <section id="return-book" class="tab-content" style="display: none;">
+    <h2>Return Book</h2>
+    <input type="text" id="return-barcode" placeholder="Scan or Enter Barcode">
+    <button onclick="returnBook()">Return Book</button>
+  </section>
+
   <script src="scripts.js"></script>
 </body>
 </html>
