@@ -4,43 +4,58 @@ body {
   color: #333;
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
+header {
+  background-color: #2c3e50;
   padding: 20px;
-}
-
-h1 {
   text-align: center;
+  color: white;
 }
 
-input, button {
-  padding: 10px;
-  margin: 5px 0;
-  width: 100%;
+header h1 {
+  margin: 0;
 }
 
-button {
-  background-color: #4CAF50;
+nav button {
+  background-color: #34495e;
   color: white;
   border: none;
+  padding: 10px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #45a049;
+nav button:hover {
+  background-color: #2c3e50;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 table, th, td {
   border: 1px solid #ddd;
-}
-
-th, td {
   padding: 10px;
   text-align: left;
+}
+
+.status-available {
+  color: green;
+}
+
+.status-checked-out {
+  color: orange;
+}
+
+.status-hold {
+  color: blue;
+}
+
+.status-lost {
+  color: red;
 }
