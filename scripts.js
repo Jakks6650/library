@@ -1,99 +1,61 @@
-// Dummy data for testing
-const books = [];
+// Initialize the books array (can be replaced with real data)
+let books = [
+  { barcode: "12345", title: "Book One", author: "Author One", status: "available", dueDate: "", checkedOutBy: "", hold: "", note: "" },
+  { barcode: "67890", title: "Book Two", author: "Author Two", status: "available", dueDate: "", checkedOutBy: "", hold: "", note: "" }
+];
 
-// Store current book stats
-const stats = {
-  totalBooks: 0,
-  checkedOut: 0,
-  onHold: 0,
-  lost: 0
-};
-
-// Switch tabs
-function showTab(tabId) {
-  document.querySelectorAll('.tab-content').forEach(tab => {
-    tab.style.display = 'none';
-  });
-  document.getElementById(tabId).style.display = 'block';
+// Function to show a specific tab
+function showTab(tabName) {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => tab.style.display = 'none'); // Hide all tabs
+  const activeTab = document.getElementById(tabName);
+  if (activeTab) {
+    activeTab.style.display = 'block'; // Show the selected tab
+  }
 }
 
-// Register a new book
-function registerBook() {
+// Function to add a new book
+function addBook() {
   const barcode = document.getElementById('barcode').value;
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
-
-  if (!barcode || !title || !author) {
-    alert("Please fill in all fields");
-    return;
-  }
-
-  const book = {
-    barcode,
-    title,
-    author,
-    status: 'Available',
-    checkoutDate: null,
-    holder: null,
-    dueDate: null,
-    notes: [],
-    hold: false
-  };
-
-  books.push(book);
-  updateStats();
-  displayBooks();
+  const newBook = { barcode, title, author, status: "available", dueDate: "", checkedOutBy: "", hold: "", note: "" };
+  books.push(newBook);
+  displayBooks(books);
   clearAddBookFields();
 }
 
-// Update stats on the home page
-function updateStats() {
-  stats.totalBooks = books.length;
-  stats.checkedOut = books.filter(book => book.status === 'Checked Out').length;
-  stats.onHold = books.filter(book => book.hold).length;
-  stats.lost = books.filter(book => book.status === 'Lost').length;
-
-  document.getElementById('total-books').textContent = stats.totalBooks;
-  document.getElementById('checked-out-count').textContent = stats.checkedOut;
-  document.getElementById('hold-count').textContent = stats.onHold;
-  document.getElementById('lost-count').textContent = stats.lost;
+// Display all books
+function displayBooks(bookList) {
+  const bookContainer = document.getElementById('book-list');
+  bookContainer.innerHTML = ''; // Clear the book list
+  bookList.forEach(book => {
+    const bookElement = document.createElement('div');
+    bookElement.classList.add('book');
+    bookElement.innerHTML = `
+      <span>${book.title}</span>
+      <span>${book.author}</span>
+      <span class="status ${book.status}">${book.status}</span>
+      <button onclick="viewBookDetails('${book.barcode}')">View</button>
+    `;
+    bookContainer.appendChild(bookElement);
+  });
 }
 
-// Display books in the library tab
-function displayBooks() {
-  const bookTable = document.getElementById('book-table');
-  bookTable.innerHTML = books.map(book => `
-    <tr onclick="viewBookDetails('${book.barcode}')">
-      <td>${book.title}</td>
-      <td>${book.author}</td>
-      <td><span class="status-${book.status.replace(' ', '-').toLowerCase()}">${book.status}</span></td>
-    </tr>
-  `).join('');
-}
-
-// Open the detailed view of a book when clicked
+// View book details
 function viewBookDetails(barcode) {
   const book = books.find(b => b.barcode === barcode);
-  if (!book) return;
-
   const bookDetails = `
     <h3>${book.title}</h3>
-    <p><strong>Author:</strong> ${book.author}</p>
-    <p><strong>Status:</strong> <span class="status-${book.status.replace(' ', '-').toLowerCase()}">${book.status}</span></p>
-    <p><strong>Holder:</strong> ${book.holder ? book.holder : 'N/A'}</p>
-    <p><strong>Due Date:</strong> ${book.dueDate ? book.dueDate : 'N/A'}</p>
-    <p><strong>Notes:</strong> ${book.notes.length ? book.notes.join(', ') : 'None'}</p>
+    <p>Author: ${book.author}</p>
+    <p>Status: ${book.status}</p>
+    <p>Checked Out By: ${book.checkedOutBy || 'N/A'}</p>
+    <p>Due Date: ${book.dueDate || 'N/A'}</p>
+    <p>Hold: ${book.hold || 'No holds'}</p>
+    <p>Note: ${book.note || 'No notes'}</p>
     <button onclick="closePopup()">Close</button>
   `;
-
   openPopup(bookDetails);
-}
-
-// Clear the input fields for adding a new book
-function clearAddBookFields() {
-  document.getElementById('barcode').value = '';
-  document.getElementById('title').value = '';
-  document.getElementById('author').value = '';
 }
 
 // Open a popup
@@ -112,11 +74,80 @@ function closePopup() {
   }
 }
 
+// Clear the input fields for adding a new book
+function clearAddBookFields() {
+  document.getElementById('barcode').value = '';
+  document.getElementById('title').value = '';
+  document.getElementById('author').value = '';
+}
+
 // Search for books
 function searchBooks() {
   const query = document.getElementById('search').value.toLowerCase();
   const filteredBooks = books.filter(book => book.title.toLowerCase().includes(query) || book.author.toLowerCase().includes(query));
   displayBooks(filteredBooks);
+}
+
+// Handle checking out books
+function checkoutBook(barcode, userName) {
+  const book = books.find(b => b.barcode === barcode);
+  if (book && book.status === "available") {
+    const today = new Date();
+    book.status = "checked out";
+    book.checkedOutBy = userName;
+    book.dueDate = new Date(today.setDate(today.getDate() + 30)).toLocaleDateString();
+    displayBooks(books);
+  } else {
+    alert("Book is already checked out or not available.");
+  }
+}
+
+// Mark a book as lost
+function markLost(barcode) {
+  const book = books.find(b => b.barcode === barcode);
+  if (book) {
+    book.status = "lost";
+    displayBooks(books);
+  }
+}
+
+// Handle returns
+function returnBook(barcode) {
+  const book = books.find(b => b.barcode === barcode);
+  if (book) {
+    const today = new Date();
+    const dueDate = new Date(book.dueDate);
+    if (today > dueDate) {
+      book.status = "late";
+      alert("Book is late!");
+    } else {
+      book.status = "available";
+      alert("Book returned on time.");
+    }
+    book.checkedOutBy = "";
+    book.dueDate = "";
+    displayBooks(books);
+  }
+}
+
+// Add a hold to a book
+function addHold(barcode, userName) {
+  const book = books.find(b => b.barcode === barcode);
+  if (book && book.status !== "checked out") {
+    book.hold = userName;
+    displayBooks(books);
+  } else {
+    alert("Cannot place hold on a checked-out book.");
+  }
+}
+
+// Add a note to a book
+function addNote(barcode, note) {
+  const book = books.find(b => b.barcode === barcode);
+  if (book) {
+    book.note = note;
+    displayBooks(books);
+  }
 }
 
 // Initialize the page
